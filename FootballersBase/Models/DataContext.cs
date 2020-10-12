@@ -8,6 +8,7 @@ namespace FootballersBase.Models
           : base(options)
         {
             Database.EnsureCreated();
+            Database.EnsureDeleted();
         }
 
         public DbSet<Player> Players { get; set; }
