@@ -1,4 +1,5 @@
 ﻿using FootballersBase.Models;
+using FootballersBase.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,6 +33,14 @@ namespace FootballersBase
             services.AddDbContext<DataContext>(options =>
                                       options.UseSqlServer(
                                           Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<DataContextIndexedDb>(options =>
+                                      options.UseSqlServer(
+                                          Configuration.GetConnectionString("DefaultConnectionIndexedDb")));
+
+            services.AddScoped<IQueryRepository, QueryRepository>();
+            services.AddScoped<IQueryRepository, QueryWithIndexRepository>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
