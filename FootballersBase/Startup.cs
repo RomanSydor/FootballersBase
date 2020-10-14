@@ -1,4 +1,5 @@
-﻿using FootballersBase.Models;
+﻿using FootballersBase.Contexts;
+using FootballersBase.Models;
 using FootballersBase.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,8 +39,8 @@ namespace FootballersBase
                                       options.UseSqlServer(
                                           Configuration.GetConnectionString("DefaultConnectionIndexedDb")));
 
-            services.AddScoped<IQueryRepository, QueryRepository>();
-            services.AddScoped<IQueryRepository, QueryWithIndexRepository>();
+            services.AddScoped<FootballersDbRepository, DefaultFootballersRepository>();
+            services.AddScoped<FootballersDbRepository, IndexedFootballersRepository>();
 
         }
 

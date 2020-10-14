@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FootballersBase.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace FootballersBase.Models
+namespace FootballersBase.Contexts
 {
     public class DataContext : DbContext
     {
