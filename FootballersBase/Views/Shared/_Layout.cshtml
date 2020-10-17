@@ -30,7 +30,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
@@ -40,10 +39,10 @@
 
     <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
+    <div class="container body-content" style="overflow: hidden; display: flex; flex-direction: column; min-height: 90vh;">
         @RenderBody()
         <hr />
-        <footer>
+        <footer style="margin-top: auto;">
             <p>&copy; 2020 - FootballersBase</p>
         </footer>
     </div>

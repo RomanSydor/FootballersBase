@@ -1,6 +1,7 @@
 ﻿using FootballersBase.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
 
 namespace FootballersBase.Controllers
 {
@@ -10,23 +11,35 @@ namespace FootballersBase.Controllers
         private FootballersDbRepository _defaultDbRepository;
         private FootballersDbRepository _indexedDbRepository;
 
-        public QueryController(DefaultFootballersRepository defaultRepo, IndexedFootballersRepository indexedRepo)
+        public QueryController()
         {
-            _defaultDbRepository = defaultRepo;
-            _indexedDbRepository = indexedRepo;
+            _defaultDbRepository = new DefaultFootballersRepository();
+            _indexedDbRepository = new IndexedFootballersRepository();
+            _defaultDbRepository.CreateConnection();
+            _indexedDbRepository.CreateConnection();
         }
 
-        public ActionResult QueryResult(string sqlQuery, string db)
+        [Route("/Query/Result/{db}")]
+        public ActionResult Result(string sqlQuery, [FromRoute]string db) 
         {
+            var sw = new Stopwatch();
             try
             {
                 ViewBag.Header = null;
                 ViewBag.Body = null;
                 ViewBag.Error = null;
+                ViewBag.Time = null;
 
                 if (db == "Default")
                 {
+                    sw.Start();
                     var resp = _defaultDbRepository.Query(sqlQuery);
+                    sw.Stop();
+                    var time = sw.Elapsed;
+
+                    ViewBag.Time = String.Format("{0:00}m {1:00}s {2:00}ms",
+                       time.Minutes, time.Seconds,time.Milliseconds);
+
                     ViewBag.Header = resp.TableHeader;
                     ViewBag.Body = resp.TableBody;
                 }
@@ -38,7 +51,7 @@ namespace FootballersBase.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "Query is empty.";
+                    ViewBag.Error = "Database wasn't chosen";
                 }
 
             }

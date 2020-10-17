@@ -38,10 +38,6 @@ namespace FootballersBase
             services.AddDbContext<DataContextIndexedDb>(options =>
                                       options.UseSqlServer(
                                           Configuration.GetConnectionString("DefaultConnectionIndexedDb")));
-
-            services.AddScoped<FootballersDbRepository, DefaultFootballersRepository>();
-            services.AddScoped<FootballersDbRepository, IndexedFootballersRepository>();
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

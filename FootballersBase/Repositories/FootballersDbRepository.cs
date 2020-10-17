@@ -13,8 +13,6 @@ namespace FootballersBase.Repositories
         public QueryResponse Query(string sqlQuery)
         {
             var responce = new QueryResponse();
-            //responce.TableHeader = new List<List<string>>();
-            //responce.TableBody = new List<List<string>>();
 
             _connection.Open();
             var command = new SqlCommand(sqlQuery, _connection);

@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (ViewBag.Error != null)
+{
+    <h2>ERROR</h2>
+    <label class="danger">@ViewBag.Error</label>
+}
+else
+{
+    <h2>RESULT</h2>
+    <div>
+        <h4>
+        <strong>Time:</strong> @ViewBag.Time
+        </h4>
+    </div>
+
+    <br>
+    <table class="table table-bordered">
+        <thead>
+            @foreach (var vh in ViewBag.Header)
+            {
+                <tr class="success">
+                    @foreach (var dh in vh)
+                    {
+                        <th>
+                            @dh
+                        </th>
+                    }
+                </tr>
+            }
+        </thead>
+        <tbody>
+            @foreach (var vb in ViewBag.Body)
+            {
+                <tr>
+                    @foreach (var db in vb)
+                    {
+                        <td>
+                            @db
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    @*<div>
+            <a href="/Query/CSVSave" class="btn btn-success">Save result</a>
+        </div>*@
+}
