@@ -19,8 +19,8 @@ namespace FootballersBase.Controllers
             _indexedDbRepository.CreateConnection();
         }
 
-        [Route("/Query/Result/{db}")]
-        public ActionResult Result(string sqlQuery, [FromRoute]string db) 
+        [Route("/Query/Result/")]
+        public ActionResult Result(string sqlQuery, string db) 
         {
             var sw = new Stopwatch();
             try
@@ -45,7 +45,14 @@ namespace FootballersBase.Controllers
                 }
                 else if (db == "Indexed")
                 {
+                    sw.Start();
                     var resp = _indexedDbRepository.Query(sqlQuery);
+                    sw.Stop();
+                    var time = sw.Elapsed;
+
+                    ViewBag.Time = String.Format("{0:00}m {1:00}s {2:00}ms",
+                      time.Minutes, time.Seconds, time.Milliseconds);
+
                     ViewBag.Header = resp.TableHeader;
                     ViewBag.Body = resp.TableBody;
                 }
