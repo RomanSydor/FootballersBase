@@ -29,6 +29,16 @@ namespace FootballersBase.Controllers
             return View();
         }
 
+        public IActionResult Query()
+        {
+            return View();
+        }
+
+        public IActionResult Input()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

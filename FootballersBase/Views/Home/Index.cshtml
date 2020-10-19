@@ -1,15 +1,13 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
-<h1 style="padding-left: 440px;"> QUERY: </h1>
-<br>
-
-<form method="post" action="/Query/Result/" style="padding-left: 440px;">
-    @Html.DropDownList("db", new SelectList(new string[] { "Default", "Indexed" }), "Database")
-    <br />
-    <br />
-    <textarea style="height:200px; width:300px;" id="text" name="sqlQuery"> </textarea>
-    <br />
-    <input class="btn btn-success" type="submit" value="Run" style="height: 40px; width: 60px; margin-left: 110px;" />
-</form>
+    <div style="justify-content:space-around; display:flex;">
+        <div>
+            <h3>Input data into databases</h3>
+            <a class="btn btn-success" href="/Home/Input">HERE</a>
+        </div>
+        <div>
+            <h3>Create query</h3>
+            <a class="btn btn-success" href="/Home/Query">HERE</a>
+        </div>
+    </div>

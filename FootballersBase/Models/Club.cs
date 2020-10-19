@@ -13,7 +13,7 @@ namespace FootballersBase.Models
         public string Name { get; set; }
         public string Country { get; set; }
         public string Town { get; set; }
-        public int CoachId { get; set; }
+        public int? CoachId { get; set; }
 
         [ForeignKey(nameof(CoachId))]
         public Coach Coach { get; set; }
