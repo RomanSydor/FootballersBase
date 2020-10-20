@@ -10,6 +10,8 @@ namespace FootballersBase.Controllers
         private FootballersDbRepository _defaultDbRepository;
         private FootballersDbRepository _indexedDbRepository;
 
+        private string _alphabeth = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
         public PlayersController()
         {
             _defaultDbRepository = new DefaultFootballersRepository();
@@ -24,14 +26,27 @@ namespace FootballersBase.Controllers
 
             for (int i = 1; i <= 1000; i++)
             {
-                _defaultDbRepository.Query("Insert into Players (FirstName, LastName, Age, Nationality, ClubId, NationalTeamId)" +
-                    $"\nValues ('FirstName{i}', 'LastName{i}', {rnd.Next(18, 41)}, 'Nationality', null, null);");
-            }
+                var firstName = "";
+                for (int fn = 0; fn < 13; fn++)
+                {
+                    firstName += _alphabeth[rnd.Next(0, _alphabeth.Length)];    
+                }
+                var lastName = "";
+                for (int ln = 0; ln < 13; ln++)
+                {
+                    lastName += _alphabeth[rnd.Next(0, _alphabeth.Length)];
+                }
+                var nationality = "";
+                for (int n = 0; n < 15; n++)
+                {
+                    nationality += _alphabeth[rnd.Next(0, _alphabeth.Length)];
+                }
 
-            for (int i = 1; i <= 1000; i++)
-            {
+                _defaultDbRepository.Query("Insert into Players (FirstName, LastName, Age, Nationality, ClubId, NationalTeamId)" +
+                    $"\nValues ('{firstName}', '{lastName}', {rnd.Next(16, 45)}, '{nationality}', null, null);");
+
                 _indexedDbRepository.Query("Insert into Players (FirstName, LastName, Age, Nationality, ClubId, NationalTeamId)" +
-                    $"\nValues ('FirstName{i}', 'LastName{i}', {rnd.Next(18, 41)}, 'Nationality', null, null);");
+                    $"\nValues ('{firstName}', '{lastName}', {rnd.Next(16, 45)}, '{nationality}', null, null);");
             }
 
             return RedirectToAction("Index", "Home");
@@ -41,17 +56,14 @@ namespace FootballersBase.Controllers
         {
             var rnd = new Random();
 
-            for (int i = 1; i <= 1000; i++)
+            for (int i = 1001; i <= 2000; i++)
             {
                 _defaultDbRepository.Query("Update Players" +
-                    $"\nset ClubId = {rnd.Next(1,1001)}, NationalTeamId = {rnd.Next(1,101)}" +
+                    $"\nset ClubId = {rnd.Next(2001, 3001)}, NationalTeamId = {rnd.Next(101, 201)}" +
                     $"\nwhere Id = {i};");
-            }
-
-            for (int i = 1; i <= 1000; i++)
-            {
+            
                 _indexedDbRepository.Query("Update Players" +
-                    $"\nset ClubId = {rnd.Next(1, 1001)}, NationalTeamId = {rnd.Next(1, 101)}" +
+                    $"\nset ClubId = {rnd.Next(1001, 2001)}, NationalTeamId = {rnd.Next(101, 201)}" +
                     $"\nwhere Id = {i};");
             }
 

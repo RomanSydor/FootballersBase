@@ -8,6 +8,7 @@ namespace FootballersBase.Controllers
     {
         private FootballersDbRepository _defaultDbRepository;
         private FootballersDbRepository _indexedDbRepository;
+        private string _alphabeth = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         public NationalTeamsController()
         {
@@ -23,14 +24,16 @@ namespace FootballersBase.Controllers
 
             for (int i = 1; i <= 100; i++)
             {
-                _defaultDbRepository.Query("Insert into NationalTeams (Country, CoachId)" +
-                    $"\nValues ('Country{i}', null);");
-            }
+                var country = "";
+                for (int n = 0; n < 15; n++)
+                {
+                    country += _alphabeth[rnd.Next(0, _alphabeth.Length)];
+                }
 
-            for (int i = 1; i <= 100; i++)
-            {
+                _defaultDbRepository.Query("Insert into NationalTeams (Country, CoachId)" +
+                    $"\nValues ('{country}', null);");
                 _indexedDbRepository.Query("Insert into NationalTeams (Country, CoachId)" +
-                    $"\nValues ('Country{i}', null);");
+                    $"\nValues ('{country}', null);");
             }
 
             return RedirectToAction("Index", "Home");
@@ -40,17 +43,13 @@ namespace FootballersBase.Controllers
         {
             var rnd = new Random();
 
-            for (int i = 1; i <= 100; i++)
+            for (int i = 101; i <= 200; i++)
             {
                 _defaultDbRepository.Query("Update NationalTeams" +
-                    $"\nset CoachId = {rnd.Next(1, 1001)}" +
+                    $"\nset CoachId = {rnd.Next(1001, 2001)}" +
                     $"\nwhere Id = {i};");
-            }
-
-            for (int i = 1; i <= 100; i++)
-            {
                 _indexedDbRepository.Query("Update NationalTeams" +
-                    $"\nset CoachId = {rnd.Next(1, 1001)}" +
+                    $"\nset CoachId = {rnd.Next(1001, 2001)}" +
                     $"\nwhere Id = {i};");
             }
 
