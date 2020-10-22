@@ -11,22 +11,25 @@ namespace FootballersBase.Controllers
         private FootballersDbRepository _defaultDbRepository;
         private FootballersDbRepository _indexedDbRepository;
         private DataContext _dataContext;
+        private DataContextIndexedDb _dataContextIndexedDb;
+
         private string _alphabeth = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        public ClubsController(DataContext dataContext)
+        public ClubsController(DataContext dataContext , DataContextIndexedDb indexedDb)
         {
             _defaultDbRepository = new DefaultFootballersRepository();
             _indexedDbRepository = new IndexedFootballersRepository();
             _defaultDbRepository.CreateConnection();
             _indexedDbRepository.CreateConnection();
             _dataContext = dataContext;
+            _dataContextIndexedDb = indexedDb;
         }
 
         public ActionResult InputIntoTable()
         {
             var rnd = new Random();
 
-            for (int i = 1; i <= 1000; i++)
+            for (int i = 1; i <= 100; i++)
             {
                 var name = "";
                 for (int n = 0; n < 15; n++)
@@ -57,18 +60,27 @@ namespace FootballersBase.Controllers
         {
             var rnd = new Random();
 
-            for (int i = 2001; i <= 3000; i++)
+            var firstClubsIdDefault = _dataContext.Clubs.Select(x => x.Id).First();
+            var lastClubsIdDefault = _dataContext.Clubs.Select(x => x.Id).Last();
+            var firstCoachesIdDefault = _dataContext.Coaches.Select(x => x.Id).First();
+            var lastCoachesIdDefault = _dataContext.Coaches.Select(x => x.Id).Last();
+
+            for (int i = firstClubsIdDefault; i <= lastClubsIdDefault; i++)
             {
                 _defaultDbRepository.Query("Update Clubs" +
-                    $"\nset CoachId = {rnd.Next(1001, 2001)}" +
+                    $"\nset CoachId = {rnd.Next(firstCoachesIdDefault, lastCoachesIdDefault + 1)}" +
                     $"\nwhere Id = {i};");
             }
 
-            for (int i = 1001; i <= 2000; i++)
+            var firstClubsIdIndexed = _dataContextIndexedDb.ClubsIndexedDb.Select(x => x.Id).First();
+            var lastClubsIdIndexed = _dataContextIndexedDb.ClubsIndexedDb.Select(x => x.Id).Last();
+            var firstCoachesIdIndexed = _dataContextIndexedDb.CoachesIndexedDb.Select(x => x.Id).First();
+            var lastCoachesIdIndexed = _dataContextIndexedDb.CoachesIndexedDb.Select(x => x.Id).Last();
+
+            for (int i = firstClubsIdIndexed; i <= lastClubsIdIndexed; i++)
             {
-                
                 _indexedDbRepository.Query("Update Clubs" +
-                    $"\nset CoachId = {rnd.Next(1001, 2001)}" +
+                    $"\nset CoachId = {rnd.Next(firstCoachesIdIndexed, lastCoachesIdIndexed + 1)}" + 
                     $"\nwhere Id = {i};");
             }
 

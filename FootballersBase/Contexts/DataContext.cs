@@ -8,8 +8,8 @@ namespace FootballersBase.Contexts
         public DataContext(DbContextOptions<DataContext> options)
           : base(options)
         {
-            Database.EnsureCreated();
-            Database.EnsureDeleted();
+            //Database.EnsureCreated();
+            //Database.EnsureDeleted();
         }
 
         public DbSet<Player> Players { get; set; }

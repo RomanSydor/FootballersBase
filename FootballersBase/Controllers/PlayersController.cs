@@ -1,6 +1,8 @@
-﻿using FootballersBase.Repositories;
+﻿using FootballersBase.Contexts;
+using FootballersBase.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace FootballersBase.Controllers
 {
@@ -9,15 +11,19 @@ namespace FootballersBase.Controllers
 
         private FootballersDbRepository _defaultDbRepository;
         private FootballersDbRepository _indexedDbRepository;
+        private DataContext _dataContext;
+        private DataContextIndexedDb _dataContextIndexedDb;
 
         private string _alphabeth = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        public PlayersController()
+        public PlayersController(DataContext dataContext, DataContextIndexedDb indexedDb)
         {
             _defaultDbRepository = new DefaultFootballersRepository();
             _indexedDbRepository = new IndexedFootballersRepository();
             _defaultDbRepository.CreateConnection();
             _indexedDbRepository.CreateConnection();
+            _dataContext = dataContext;
+            _dataContextIndexedDb = indexedDb;
         }
 
         public ActionResult InputIntoTable()
@@ -56,14 +62,31 @@ namespace FootballersBase.Controllers
         {
             var rnd = new Random();
 
-            for (int i = 1001; i <= 2000; i++)
+            var firstPlayersIdDefault = _dataContext.Players.Select(x => x.Id).First();
+            var lastPlayersIdDefault = _dataContext.Players.Select(x => x.Id).Last();
+            var firstClubsIdDefault = _dataContext.Clubs.Select(x => x.Id).First();
+            var lastClubsIdDefault = _dataContext.Clubs.Select(x => x.Id).Last();
+            var firstNationalTeamsIdDefault = _dataContext.NationalTeams.Select(x => x.Id).First();
+            var lastNationalTeamsIdDefault = _dataContext.NationalTeams.Select(x => x.Id).Last();
+
+            for (int i = firstPlayersIdDefault; i <= lastPlayersIdDefault; i++)
             {
                 _defaultDbRepository.Query("Update Players" +
-                    $"\nset ClubId = {rnd.Next(2001, 3001)}, NationalTeamId = {rnd.Next(101, 201)}" +
-                    $"\nwhere Id = {i};");
-            
+                    $"\nset ClubId = {rnd.Next(firstClubsIdDefault, lastClubsIdDefault + 1)}, NationalTeamId = {rnd.Next(firstNationalTeamsIdDefault, lastNationalTeamsIdDefault + 1)}" + 
+                    $"\nwhere Id = {i};"); 
+            }
+
+            var firstPlayersIdIndexed = _dataContextIndexedDb.PlayersIndexedDb.Select(x => x.Id).First();
+            var lastPlayersIdIndexed = _dataContextIndexedDb.PlayersIndexedDb.Select(x => x.Id).Last();
+            var firstClubsIdIndexed = _dataContextIndexedDb.ClubsIndexedDb.Select(x => x.Id).First();
+            var lastClubsIdIndexed = _dataContextIndexedDb.ClubsIndexedDb.Select(x => x.Id).Last();
+            var firstNationalTeamsIdIndexed = _dataContextIndexedDb.NationalTeamsIndexedDb.Select(x => x.Id).First();
+            var lastNationalTeamsIdIndexed = _dataContextIndexedDb.NationalTeamsIndexedDb.Select(x => x.Id).Last();
+
+            for (int i = firstPlayersIdIndexed; i <= lastPlayersIdIndexed; i++)
+            {
                 _indexedDbRepository.Query("Update Players" +
-                    $"\nset ClubId = {rnd.Next(1001, 2001)}, NationalTeamId = {rnd.Next(101, 201)}" +
+                    $"\nset ClubId = {rnd.Next(firstClubsIdIndexed, lastClubsIdIndexed + 1)}, NationalTeamId = {rnd.Next(firstNationalTeamsIdIndexed, lastNationalTeamsIdIndexed + 1)}" + 
                     $"\nwhere Id = {i};");
             }
 
