@@ -4,7 +4,7 @@ namespace FootballersBase.Repositories
 {
     public class IndexedFootballersRepository : FootballersDbRepository
     {
-        private string _connectionString = "Server=(LocalDB)\\MSSQLLocalDB;Database=FootballersIndexedDb;" +
+        private string _connectionString = "Server=DESKTOP-VUEJ976;Database=FootballersIndexedDb;" +
             "Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public override void CreateConnection()
